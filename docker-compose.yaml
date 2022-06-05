@@ -1,0 +1,63 @@
+services:
+  redis:
+    container_name: redis
+    image: redis:latest
+    restart: always
+    volumes:
+      - './data/sentry/redis/data:/data'
+  
+  postgres:
+    container_name: postgres
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_DB: ${PG_DB}
+      POSTGRES_USER: ${PG_USER}
+      POSTGRES_PASSWORD: ${PG_PASSWORD}
+    volumes:
+      - './data/sentry/postgres:/var/lib/postgresql/data'
+
+  sentry-base:
+    container_name: sentry-base
+    image: sentry:latest
+    restart: always
+    ports:
+      - "9000:9000"
+    env_file:
+      - .env
+    depends_on:
+      - redis
+      - postgres
+    volumes:
+      - './data/sentry/sentry:/var/lib/sentry/files'
+
+  sentry-cron:
+    container_name: sentry-cron
+    image: sentry:latest
+    restart: always
+    env_file:
+      - .env
+    depends_on:
+      - redis
+      - postgres
+    command: "sentry run cron"
+    volumes:
+      - './data/sentry/sentry:/var/lib/sentry/files'
+
+  sentry-worker:
+    container_name: sentry-worker
+    image: sentry:latest
+    restart: always
+    env_file:
+      - .env
+    depends_on:
+      - redis
+      - postgres
+    command: "sentry run worker"
+    volumes:
+      - './data/sentry/sentry:/var/lib/sentry/files'
+
+networks:
+  default:
+    external:
+      name: idontknowname
