@@ -1,0 +1,14 @@
+python-dotenv
+uvicorn[standard]
+fastapi
+sentry-sdk
+httpx
+requests
+pytest
+black
+pytest-asyncio
+pytest-cov
+pytest-env
+mypy
+tox
+trio
