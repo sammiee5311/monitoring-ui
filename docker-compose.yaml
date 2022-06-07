@@ -57,6 +57,18 @@ services:
     volumes:
       - './data/sentry/sentry:/var/lib/sentry/files'
 
+  backend:
+    container_name: backend
+    build: ./backend
+    depends_on:
+      - sentry-base
+    command: ["python", "main.py"]
+
+  frontend:
+    container_name: frontend
+    build: ./frontend
+    command: ["npm", "run", "preview"]
+
 networks:
   default:
     external:
