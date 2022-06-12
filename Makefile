@@ -1,11 +1,12 @@
 setup-backend:
 	cd backend &&\
 		python -m pip install --upgrade pip &&\
-			pip install tox tox-gh-actions
+			pip install -r requirements_dev.txt
 
 test-backend:
 	cd backend &&\
-		tox
+		python -m pytest . && \
+			python -m mypy main.py
 
 setup-frontend:
 	cd frontend &&\
