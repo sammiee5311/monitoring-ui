@@ -1,5 +1,7 @@
 FROM python
 
+EXPOSE 8008
+
 ARG USERNAME=sammiee5311
 ARG USER_UID=1000
 ARG USER_GID=$USER_UID
@@ -9,9 +11,9 @@ RUN groupadd --gid $USER_GID $USERNAME \
 
 WORKDIR /app
 
-EXPOSE 8008
-
 USER $USERNAME 
+
+COPY requirements_dev.txt ./
 
 RUN python3 -m pip install flit
 
