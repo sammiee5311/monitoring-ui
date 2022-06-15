@@ -69,6 +69,13 @@ services:
     build: ./frontend
     command: ["npm", "run", "preview"]
 
+  nginx:
+    container_name: nginx
+    restart: always
+    build: ./nginx
+    ports:
+      - "80:80"
+
 networks:
   default:
     external:
