@@ -67,12 +67,16 @@ services:
   frontend:
     container_name: frontend
     build: ./frontend
+    volumes:
+      - idontknowFrontendVolume:/var/www/indontknowname
     command: ["npm", "run", "preview"]
 
   nginx:
     container_name: nginx
     restart: always
     build: ./nginx
+    volumes:
+      - idontknowFrontendVolume:/var/www/indontknowname
     ports:
       - "80:80"
 
@@ -80,3 +84,7 @@ networks:
   default:
     external:
       name: idontknowname
+
+
+volumes: 
+  idontknowFrontendVolume:
