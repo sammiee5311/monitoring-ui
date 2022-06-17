@@ -57,8 +57,22 @@ services:
     volumes:
       - './data/sentry/sentry:/var/lib/sentry/files'
 
-  backend:
-    container_name: backend
+  backend-1:
+    container_name: backend-1
+    build: ./backend
+    depends_on:
+      - sentry-base
+    command: ["python", "main.py"]
+
+  backend-2:
+    container_name: backend-2
+    build: ./backend
+    depends_on:
+      - sentry-base
+    command: ["python", "main.py"]
+
+  backend-3:
+    container_name: backend-3
     build: ./backend
     depends_on:
       - sentry-base
@@ -79,6 +93,7 @@ services:
       - idontknowFrontendVolume:/var/www/indontknowname
     ports:
       - "80:80"
+      - "443:443"
 
 networks:
   default:
