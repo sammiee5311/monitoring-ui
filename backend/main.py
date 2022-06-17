@@ -12,6 +12,7 @@ from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sentry_sdk.integrations.asgi import SentryAsgiMiddleware
+from routers import temp
 
 load_dotenv("./config/.env")
 
@@ -19,10 +20,11 @@ sentry_sdk.init(dsn=os.environ["SENTRY_DNS"], environment=os.environ["SENTRY_ENV
 
 HOST = os.environ["SERVER_HOST"]
 PORT = int(os.environ["SERVER_PORT"])
-ORIGINS = ["localhost:8000"]
+ORIGINS = ["*"]
 
 app = FastAPI()
 
+app.include_router(temp.router)
 app.add_middleware(SentryAsgiMiddleware)
 app.add_middleware(
     CORSMiddleware,
