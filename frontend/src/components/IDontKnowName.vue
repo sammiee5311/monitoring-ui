@@ -1,7 +1,15 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useServerStore } from "../store/server";
+import { computed } from "@vue/reactivity";
+
+const server = useServerStore();
+const message = computed(() => server.message);
+
+server.initConnectBackend();
+</script>
 
 <template>
-  <div>Hello World</div>
+  <div>{{ message }}</div>
 </template>
 
 <style scoped></style>
