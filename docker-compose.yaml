@@ -89,6 +89,8 @@ services:
     container_name: nginx
     restart: always
     build: ./nginx
+    depends_on:
+      - sentry-base
     volumes:
       - idontknowFrontendVolume:/var/www/indontknowname
     ports:
