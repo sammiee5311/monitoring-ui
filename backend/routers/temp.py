@@ -8,4 +8,4 @@ router = APIRouter(
 
 @router.get("/")
 async def temp():
-    return {"message": "temp"}
+    return {"message": f"message: `Hello World` from backend."}
