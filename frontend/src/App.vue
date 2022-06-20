@@ -1,9 +1,15 @@
 <script setup lang="ts">
 import { RouterView } from "vue-router";
+import Header from "./components/ui/Header.vue";
+import Footer from "./components/ui/Footer.vue";
 </script>
 
 <template>
-  <RouterView />
+  <div>
+    <Header />
+    <RouterView />
+    <Footer />
+  </div>
 </template>
 
 <style>
@@ -13,6 +19,5 @@ import { RouterView } from "vue-router";
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>

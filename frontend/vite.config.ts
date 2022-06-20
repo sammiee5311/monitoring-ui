@@ -5,7 +5,7 @@ import vue from "@vitejs/plugin-vue";
 export default defineConfig({
   server: {
     proxy: {
-      "/api/v0": "https://localhost",
+      "/api": "https://localhost",
     },
   },
   test: {
