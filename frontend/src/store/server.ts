@@ -1,12 +1,19 @@
 import { defineStore } from "pinia";
 import axios from "axios";
+import { AxiosResponse } from "axios";
 
 import { ServerState, ResponseData, SentryEvent, SentryIssue } from "../types/store";
+
+const TIMEOUT_SECOND = 1000 * 60;
+
+const sleep = (ms: number): Promise<string> => {
+  return new Promise((resolve) => setTimeout(resolve, ms, "Timeout occured during api call."));
+};
 
 const getServerState = () => {
   return {
     message: "",
-    authToken: "3ac9f50f3eec42cba9b8715d38531e3e56eaf6ae32ee41769c5e13947699af88",
+    authToken: import.meta.env.VITE_SENTRY_AUTH_TOKEN as string,
     isEventsFetched: false,
     isIssuesFetched: false,
   };
@@ -18,8 +25,16 @@ export const useServerStore = defineStore("server", {
   actions: {
     async initConnectBackend() {
       try {
-        const response = await axios.get("/api/v0/temp/");
-        const data: ResponseData = response.data;
+        const response = await Promise.race<string | AxiosResponse<ResponseData, any>>([
+          axios.get("/api/v0/temp/"),
+          sleep(TIMEOUT_SECOND),
+        ]);
+
+        if (typeof response === "string") {
+          throw new Error(response);
+        }
+
+        const data = response.data;
 
         this.message = data.message;
       } catch (err) {
@@ -29,12 +44,20 @@ export const useServerStore = defineStore("server", {
 
     async getSentryEvents() {
       try {
-        const response = await axios.get("/api/0/projects/sentry/fast-api/events/", {
-          headers: {
-            Authorization: `Bearer ${this.authToken}`,
-          },
-        });
-        const data: SentryEvent[] = response.data;
+        const response = await Promise.race<string | AxiosResponse<SentryEvent[], any>>([
+          axios.get("/api/0/projects/sentry/fast-api/events/", {
+            headers: {
+              Authorization: `Bearer ${this.authToken}`,
+            },
+          }),
+          sleep(TIMEOUT_SECOND),
+        ]);
+
+        if (typeof response === "string") {
+          throw new Error(response);
+        }
+
+        const data = response.data;
 
         this.sentryEvents = data;
       } catch (err) {
@@ -45,12 +68,20 @@ export const useServerStore = defineStore("server", {
 
     async getSentryIssues() {
       try {
-        const response = await axios.get("/api/0/projects/sentry/fast-api/issues/", {
-          headers: {
-            Authorization: `Bearer ${this.authToken}`,
-          },
-        });
-        const data: SentryIssue[] = response.data;
+        const response = await Promise.race<string | AxiosResponse<SentryIssue[], any>>([
+          axios.get("/api/0/projects/sentry/fast-api/issues/", {
+            headers: {
+              Authorization: `Bearer ${this.authToken}`,
+            },
+          }),
+          sleep(TIMEOUT_SECOND),
+        ]);
+
+        if (typeof response === "string") {
+          throw new Error(response);
+        }
+
+        const data = response.data;
 
         this.sentryIssues = data;
       } catch (err) {
