@@ -7,6 +7,7 @@ __version__ = "0.1"
 import os
 import uvicorn
 import sentry_sdk
+import random
 
 from dotenv import load_dotenv
 from fastapi import FastAPI
@@ -33,6 +34,16 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.get("/error")
+async def error():
+    rad = random.randint(0, 3)
+
+    if rad > 2:
+        raise Exception("Error occured.")
+
+    return {"message": "Error test."}
 
 
 @app.get("/")
