@@ -57,6 +57,19 @@ services:
     volumes:
       - './data/sentry/sentry:/var/lib/sentry/files'
 
+  grafana:
+    container_name: grafana
+    image: grafana/grafana:latest
+    restart: always
+    depends_on:
+      - sentry-base
+    env_file:
+      - .env
+    volumes:
+      - 'idontknowGrafana:/var/lib/grafana'
+    ports:
+      - 3030:3000
+
   backend-1:
     container_name: backend-1
     build: ./backend
@@ -105,3 +118,4 @@ networks:
 
 volumes: 
   idontknowFrontendVolume:
+  idontknowGrafana:
