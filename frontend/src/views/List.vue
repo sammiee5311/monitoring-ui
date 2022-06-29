@@ -14,10 +14,14 @@ const onButtonClicked = (event: Event) => {
 <template>
   <ul class="nav nav-tabs">
     <li class="nav-item">
-      <a class="nav-link" id="event" href="#" @click="onButtonClicked">Event</a>
+      <a :class="`nav-link ${currentTab === 'event' ? 'active' : ''}`" id="event" href="#" @click="onButtonClicked"
+        >Event</a
+      >
     </li>
     <li class="nav-item">
-      <a class="nav-link" id="issue" href="#" @click="onButtonClicked">Issue</a>
+      <a :class="`nav-link ${currentTab === 'issue' ? 'active' : ''}`" id="issue" href="#" @click="onButtonClicked"
+        >Issue</a
+      >
     </li>
   </ul>
 

@@ -16,9 +16,9 @@ const isIssuesFetched = computed(() => server.isIssuesFetched);
     </div>
   </div>
   <div class="list-group" v-for="issue of sentryIssueList" :key="issue.id">
-    <a :href="issue.permalink" class="list-group-item list-group-item-action">
+    <div :href="issue.permalink" class="list-group-item list-group-item-action">
       {{ issue.title }}
-    </a>
+    </div>
   </div>
 </template>
 

@@ -1,12 +1,17 @@
 <script setup lang="ts">
 import { useServerStore } from "../store/server";
 import { computed } from "@vue/reactivity";
+import router from "../routers";
 
 const server = useServerStore();
 server.getSentryEvents();
 
 const sentryEventList = computed(() => server.sentryEvents);
 const isEventsFetched = computed(() => server.isEventsFetched);
+
+const goToEventDetail = (eventId: string) => {
+  router.push({ path: `/list/event/${eventId}` });
+};
 </script>
 
 <template>
@@ -16,12 +21,14 @@ const isEventsFetched = computed(() => server.isEventsFetched);
     </div>
   </div>
   <div class="list-group" v-for="event of sentryEventList" :key="event.eventID">
-    <a
+    <div
       :href="`http://localhost:9000/sentry/fast-api/events/${event.eventID}/`"
       class="list-group-item list-group-item-action"
+      @click="goToEventDetail(event.eventID)"
     >
-      {{ event.title }}
-    </a>
+      {{ event.title }} | {{ event.tags.find((tag) => tag.key === "server_name")?.value }} |
+      {{ event.tags.find((tag) => tag.key === "url")?.value }}
+    </div>
   </div>
 </template>
 
