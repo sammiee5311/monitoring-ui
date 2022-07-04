@@ -1,17 +1,21 @@
 <script setup lang="ts">
+import { computed } from "vue";
 import { useServerStore } from "../store/server";
 import { useRoute } from "vue-router";
 
 const route = useRoute();
 const server = useServerStore();
+server.getGrafanaPanels();
 
-const eventId = route.params.eventId;
+const grafanaPanels = computed(() => server.grafanaPanels);
+const isGrafanaPanelsFetched = computed(() => server.isGrafanaPanelsFetched);
 </script>
 
 <template>
   <div>
     <iframe
-      src="http://localhost:3030/d-solo/OnfS5Lqnz/init?orgId=1&from=1656486968140&to=1656508568140&panelId=2"
+      v-if="isGrafanaPanelsFetched"
+      :src="grafanaPanels![0].url"
       width="1100"
       height="200"
       frameborder="0"

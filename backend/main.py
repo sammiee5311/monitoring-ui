@@ -13,7 +13,7 @@ from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sentry_sdk.integrations.asgi import SentryAsgiMiddleware
-from routers import temp
+from routers import temp, grafana
 
 load_dotenv("./config/.env")
 
@@ -26,6 +26,7 @@ ORIGINS = ["*"]
 app = FastAPI()
 
 app.include_router(temp.router)
+app.include_router(grafana.router)
 app.add_middleware(SentryAsgiMiddleware)
 app.add_middleware(
     CORSMiddleware,

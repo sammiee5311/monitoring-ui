@@ -3,8 +3,10 @@ export type ServerState = {
   authToken: string;
   sentryEvents?: SentryEvent[];
   sentryIssues?: SentryIssue[];
+  grafanaPanels?: GrafanaPanels[];
   isEventsFetched: boolean;
   isIssuesFetched: boolean;
+  isGrafanaPanelsFetched: boolean;
 };
 
 export type ResponseData = {
@@ -14,6 +16,11 @@ export type ResponseData = {
 type SentryEventTag = {
   key: string;
   value: string;
+};
+
+export type GrafanaPanels = {
+  url: string;
+  server: string;
 };
 
 export type SentryEvent = {

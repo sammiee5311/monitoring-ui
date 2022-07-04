@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import axios from "axios";
 import { AxiosResponse } from "axios";
 
-import { ServerState, ResponseData, SentryEvent, SentryIssue } from "../types/store";
+import { ServerState, ResponseData, SentryEvent, SentryIssue, GrafanaPanels } from "../types/store";
 
 const TIMEOUT_SECOND = 1000 * 60;
 
@@ -16,6 +16,7 @@ const getServerState = () => {
     authToken: import.meta.env.VITE_SENTRY_AUTH_TOKEN as string,
     isEventsFetched: false,
     isIssuesFetched: false,
+    isGrafanaPanelsFetched: false,
   };
 };
 
@@ -39,6 +40,30 @@ export const useServerStore = defineStore("server", {
         this.message = data.message;
       } catch (err) {
         this.message = `Frontend cannot connect to Backend (${err})`;
+      }
+    },
+
+    async getGrafanaPanels() {
+      try {
+        const response = await Promise.race<string | AxiosResponse<{ grafanaPanels: GrafanaPanels[] }, any>>([
+          axios.get("/api/v0/grafana/", {
+            headers: {
+              Authorization: `Bearer ${this.authToken}`,
+            },
+          }),
+          sleep(TIMEOUT_SECOND),
+        ]);
+
+        if (typeof response === "string") {
+          throw new Error(response);
+        }
+
+        const data = response.data;
+
+        this.grafanaPanels = data.grafanaPanels;
+      } catch (err) {
+      } finally {
+        this.isGrafanaPanelsFetched = true;
       }
     },
 
