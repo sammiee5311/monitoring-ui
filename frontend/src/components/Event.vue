@@ -9,8 +9,8 @@ server.getSentryEvents();
 const sentryEventList = computed(() => server.sentryEvents);
 const isEventsFetched = computed(() => server.isEventsFetched);
 
-const goToEventDetail = (eventId: string) => {
-  router.push({ path: `/list/event/${eventId}` });
+const goToEventDetail = (eventId: string, eventServer: string) => {
+  router.push({ path: `/list/event/${eventId}`, query: { server: eventServer } });
 };
 </script>
 
@@ -24,7 +24,7 @@ const goToEventDetail = (eventId: string) => {
     <div
       :href="`http://localhost:9000/sentry/fast-api/events/${event.eventID}/`"
       class="list-group-item list-group-item-action"
-      @click="goToEventDetail(event.eventID)"
+      @click="goToEventDetail(event.eventID, 'server')"
     >
       {{ event.title }} | {{ event.tags.find((tag) => tag.key === "server_name")?.value }} |
       {{ event.tags.find((tag) => tag.key === "url")?.value }}

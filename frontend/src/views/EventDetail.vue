@@ -4,8 +4,10 @@ import { useServerStore } from "../store/server";
 import { useRoute } from "vue-router";
 
 const route = useRoute();
+const query = <{ server: string }>route.query;
 const server = useServerStore();
-server.getGrafanaPanels();
+
+server.getGrafanaPanels(query.server);
 
 const grafanaPanels = computed(() => server.grafanaPanels);
 const isGrafanaPanelsFetched = computed(() => server.isGrafanaPanelsFetched);
@@ -15,7 +17,9 @@ const isGrafanaPanelsFetched = computed(() => server.isGrafanaPanelsFetched);
   <div>
     <iframe
       v-if="isGrafanaPanelsFetched"
-      :src="grafanaPanels![0].url"
+      v-for="grafanaPanel in grafanaPanels"
+      :key="grafanaPanel.url"
+      :src="grafanaPanel.url"
       width="1100"
       height="200"
       frameborder="0"

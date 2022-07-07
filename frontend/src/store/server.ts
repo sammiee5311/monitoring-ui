@@ -43,10 +43,10 @@ export const useServerStore = defineStore("server", {
       }
     },
 
-    async getGrafanaPanels() {
+    async getGrafanaPanels(server: string) {
       try {
         const response = await Promise.race<string | AxiosResponse<{ grafanaPanels: GrafanaPanels[] }, any>>([
-          axios.get("/api/v0/grafana/", {
+          axios.get(`/api/v0/grafana?server=${server}`, {
             headers: {
               Authorization: `Bearer ${this.authToken}`,
             },
