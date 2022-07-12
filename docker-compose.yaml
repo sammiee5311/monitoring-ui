@@ -4,7 +4,7 @@ services:
     image: redis:latest
     restart: always
     volumes:
-      - './data/sentry/redis/data:/data'
+      - "./data/sentry/redis/data:/data"
   
   postgres:
     container_name: postgres
@@ -15,7 +15,18 @@ services:
       POSTGRES_USER: ${PG_USER}
       POSTGRES_PASSWORD: ${PG_PASSWORD}
     volumes:
-      - './data/sentry/postgres:/var/lib/postgresql/data'
+      - "./data/sentry/postgres:/var/lib/postgresql/data"
+  
+  mysql:
+    container_name: mysql    
+    image: mysql:8.0
+    restart: always
+    ports:
+      - "3306:3306"
+    env_file:
+      - .env
+    volumes:
+      - "./mysql/data:/var/lib/mysql"
 
   sentry-base:
     container_name: sentry-base
@@ -29,7 +40,7 @@ services:
       - redis
       - postgres
     volumes:
-      - './data/sentry/sentry:/var/lib/sentry/files'
+      - "./data/sentry/sentry:/var/lib/sentry/files"
 
   sentry-cron:
     container_name: sentry-cron
@@ -42,7 +53,7 @@ services:
       - postgres
     command: "sentry run cron"
     volumes:
-      - './data/sentry/sentry:/var/lib/sentry/files'
+      - "./data/sentry/sentry:/var/lib/sentry/files"
 
   sentry-worker:
     container_name: sentry-worker
@@ -55,7 +66,7 @@ services:
       - postgres
     command: "sentry run worker"
     volumes:
-      - './data/sentry/sentry:/var/lib/sentry/files'
+      - "./data/sentry/sentry:/var/lib/sentry/files"
 
   grafana:
     container_name: grafana
@@ -68,7 +79,7 @@ services:
     env_file:
       - .env
     volumes:
-      - 'idontknowGrafana:/var/lib/grafana'
+      - "idontknowGrafana:/var/lib/grafana"
 
   prometheus:
     image: prom/prometheus
