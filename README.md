@@ -20,6 +20,7 @@
 ### Monitoring
  - sentry
  - grafana
+ - prometheus
 
 ### Languages
  - python
