@@ -1,0 +1,7 @@
+apscheduler
+docker
+pytest-cov
+pytest-env
+mypy
+tox
+trio

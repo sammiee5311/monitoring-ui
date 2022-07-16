@@ -1,3 +1,10 @@
+"""
+This is scheduler.
+"""
+
+__version__ = "0.1"
+
+
 from docker.errors import NotFound
 from apscheduler.schedulers.background import BlockingScheduler
 from utils import get_containers_status, save_metrics_in_database
