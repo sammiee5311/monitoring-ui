@@ -10,7 +10,7 @@ from apscheduler.schedulers.background import BlockingScheduler
 from utils import get_containers_status, save_metrics_in_database
 
 
-SCHEDULER_TIME = 3
+SCHEDULER_TIME = 5
 SCHEDULER_ID = "metrics"
 SCHEDULER_TRIGGER = "interval"
 SCHEDULER_TIMEZONE = "Asia/Seoul"

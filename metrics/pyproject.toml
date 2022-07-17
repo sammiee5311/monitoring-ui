@@ -15,7 +15,8 @@ classifiers = [
 dynamic = ["version", "description"]
 dependencies = [
   "apscheduler",
-  "docker"
+  "docker",
+  "dacite"
 ]
 
 [project.optional-dependencies]

@@ -1,6 +1,4 @@
 from dataclasses import dataclass
-from datetime import time
-from typing import Optional
 
 
 @dataclass
@@ -85,10 +83,10 @@ class NetworkStats:
 
 @dataclass
 class ContainerStatus:
-    read: time
-    preread: time
+    read: str
+    preread: str
     pids_stats: dict
-    blkio_stats: dict[str, list[Optional[BlkioStats]]]
+    blkio_stats: dict[str, list[BlkioStats]]
     num_procs: int
     storage_stats: dict
     cpu_stats: CpuStats
@@ -97,3 +95,34 @@ class ContainerStatus:
     name: str
     id: str
     networks: dict[str, NetworkStats]
+
+    def get_cpu_usage(self) -> int:
+        return self.cpu_stats.cpu_usage.total_usage - self.precpu_stats.cpu_usage.total_usage
+
+    def get_memory_uasge(self) -> int:
+        return self.memory_stats.usage
+
+    def get_network_io_receive_and_transmit(self) -> tuple[int, int]:
+        io_receive, io_transmit = 0, 0
+
+        for network, stats in self.networks.items():
+            if network.startswith("eth"):
+                io_receive += stats.rx_bytes
+                io_transmit += stats.tx_bytes
+
+        return io_receive, io_transmit
+
+    def get_disk_io_read_and_write(self) -> tuple[int, int]:
+        io_read, io_write = 0, 0
+
+        for stats in self.blkio_stats.get("io_service_bytes_recursive", []):
+            if stats.op == "Read":
+                io_read += stats.value
+            elif stats.op == "Write":
+                io_write += stats.value
+            elif stats.op == "Async":
+                pass
+            elif stats.op == "Sync":
+                pass
+
+        return io_read, io_write

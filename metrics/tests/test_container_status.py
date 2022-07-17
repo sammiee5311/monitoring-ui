@@ -1,14 +1,21 @@
-from data import ContainerStatus
+from container_status import ContainerStatus
 from datetime import time
+from dacite import from_dict
 
 
 TEST_CONTAINER_STATUS = {
-    "read": time(),
-    "preread": time(),
+    "read": str(time()),
+    "preread": str(time()),
     "pids_stats": {"current": 1},
     "blkio_stats": {
-        "io_service_bytes_recursive": [],
-        "io_serviced_recursive": [],
+        "io_service_bytes_recursive": [
+            {"major": 1, "minor": 0, "op": "Read", "value": 1},
+            {"major": 1, "minor": 0, "op": "Write", "value": 2},
+            {"major": 1, "minor": 0, "op": "Sync", "value": 3},
+            {"major": 1, "minor": 0, "op": "Async", "value": 0},
+            {"major": 1, "minor": 0, "op": "Discard", "value": 0},
+            {"major": 1, "minor": 0, "op": "Total", "value": 3},
+        ]
     },
     "num_procs": 0,
     "storage_stats": {},
@@ -81,8 +88,8 @@ TEST_CONTAINER_STATUS = {
             "rx_packets": 1,
             "rx_errors": 0,
             "rx_dropped": 0,
-            "tx_bytes": 0,
-            "tx_packets": 0,
+            "tx_bytes": 1,
+            "tx_packets": 1,
             "tx_errors": 0,
             "tx_dropped": 0,
         }
@@ -90,7 +97,22 @@ TEST_CONTAINER_STATUS = {
 }
 
 
-def test_container_status_data() -> None:
-    container_status = ContainerStatus(**TEST_CONTAINER_STATUS)
+def test_container_server_name() -> None:
+    container_status = from_dict(data_class=ContainerStatus, data=TEST_CONTAINER_STATUS)
+    server_name, server_id = container_status.name, container_status.id
 
-    assert container_status.id == "test"
+    assert server_name == "test"
+    assert server_id == "test"
+
+
+def test_get_container_metrics() -> None:
+    container_status = from_dict(data_class=ContainerStatus, data=TEST_CONTAINER_STATUS)
+    cpu_usage = container_status.get_cpu_usage()
+    memory_usage = container_status.get_memory_uasge()
+    network_io_receive, network_io_transmit = container_status.get_network_io_receive_and_transmit()
+    disk_io_read, disk_io_write = container_status.get_disk_io_read_and_write()
+
+    assert cpu_usage == 0
+    assert memory_usage == 1
+    assert network_io_receive == 1 and network_io_transmit == 1
+    assert disk_io_read == 1 and disk_io_write == 2

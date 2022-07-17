@@ -1,5 +1,6 @@
 apscheduler
 docker
+dacite
 pytest-cov
 pytest-env
 mypy
