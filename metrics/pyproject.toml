@@ -16,7 +16,9 @@ dynamic = ["version", "description"]
 dependencies = [
   "apscheduler",
   "docker",
-  "dacite"
+  "dacite",
+  "sqlalchemy",
+  "mysqlclient"
 ]
 
 [project.optional-dependencies]

@@ -1,6 +1,8 @@
 apscheduler
 docker
 dacite
+sqlalchemy
+mysqlclient
 pytest-cov
 pytest-env
 mypy

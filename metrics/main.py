@@ -7,20 +7,25 @@ __version__ = "0.1"
 
 from docker.errors import NotFound
 from apscheduler.schedulers.background import BlockingScheduler
-from utils import get_containers_status, save_metrics_in_database
+from db.config import SqlAlchemyDB
+
+from utils import get_containers_status, get_metrics_from_docker, add_metric_to_database
 
 
-SCHEDULER_TIME = 5
+SCHEDULER_TIME = 60
 SCHEDULER_ID = "metrics"
 SCHEDULER_TRIGGER = "interval"
 SCHEDULER_TIMEZONE = "Asia/Seoul"
+
+db = SqlAlchemyDB()
 
 
 def main() -> None:
     try:
         containers_metrics = get_containers_status()
         for container_metric in containers_metrics:
-            save_metrics_in_database(container_metric)
+            add_metric_to_database(db, *get_metrics_from_docker(container_metric))
+
     except (KeyError, NotFound) as err:
         print(f"Server cannot save metrics: {err}")
 

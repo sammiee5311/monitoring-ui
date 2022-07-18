@@ -4,6 +4,8 @@ from typing import Iterator
 from dacite import from_dict
 
 from container_status import ContainerStatus
+from db.config import SqlAlchemyDB
+from db.model import Metric
 
 
 def get_containers_status() -> Iterator[ContainerStatus]:
@@ -13,10 +15,64 @@ def get_containers_status() -> Iterator[ContainerStatus]:
         yield from_dict(data_class=ContainerStatus, data=status)
 
 
-def save_metrics_in_database(container_metric: ContainerStatus) -> None:
+def get_metrics_from_docker(container_metric: ContainerStatus) -> tuple[str, str, str, int, int, int, int, int, int]:
     machine_name = socket.gethostname()
     server_name, server_id = container_metric.name, container_metric.id
     cpu_usage = container_metric.get_cpu_usage()
     memory_usage = container_metric.get_memory_uasge()
     network_io_receive, network_io_transmit = container_metric.get_network_io_receive_and_transmit()
     disk_io_read, disk_io_write = container_metric.get_disk_io_read_and_write()
+
+    return (
+        machine_name,
+        server_name,
+        server_id,
+        cpu_usage,
+        memory_usage,
+        network_io_receive,
+        network_io_transmit,
+        disk_io_read,
+        disk_io_write,
+    )
+
+
+def add_metric_to_database(
+    db: SqlAlchemyDB,
+    machine_name: str,
+    server_name: str,
+    server_id: str,
+    cpu_usage: int,
+    memory_usage: int,
+    network_io_receive: int,
+    network_io_transmit: int,
+    disk_io_read: int,
+    disk_io_write: int,
+):
+    print(db)
+    print(
+        machine_name,
+        server_name,
+        server_id,
+        cpu_usage,
+        memory_usage,
+        network_io_receive,
+        network_io_transmit,
+        disk_io_read,
+        disk_io_write,
+    )
+
+    with db:
+        metric = Metric(
+            machine_name,
+            server_name,
+            server_id,
+            cpu_usage,
+            memory_usage,
+            network_io_receive,
+            network_io_transmit,
+            disk_io_read,
+            disk_io_write,
+        )
+
+        db.session.add(metric)
+        db.commit()
