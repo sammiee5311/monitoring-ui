@@ -9,11 +9,11 @@ from db.repository import AbstractRepository, SqlAlchemyRepository
 from db.model import Base
 
 
-USER = "<user>"
-PASSWORD = "<password>"
-HOST = "<host>"
-PORT = "<port>"
-DATABASE_NAME = "<db name"
+USER = "root"
+PASSWORD = "root"
+HOST = "127.0.0.1"
+PORT = "3306"
+DATABASE_NAME = "metrics"
 DATABASE_URI = f"mysql+mysqldb://{USER}:{PASSWORD}@{HOST}:{PORT}/metrics"
 
 DEFAULT_SESSION_FACTORY = sessionmaker(

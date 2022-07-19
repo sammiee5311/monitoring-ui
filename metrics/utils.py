@@ -48,18 +48,6 @@ def add_metric_to_database(
     disk_io_read: int,
     disk_io_write: int,
 ):
-    print(db)
-    print(
-        machine_name,
-        server_name,
-        server_id,
-        cpu_usage,
-        memory_usage,
-        network_io_receive,
-        network_io_transmit,
-        disk_io_read,
-        disk_io_write,
-    )
 
     with db:
         metric = Metric(
