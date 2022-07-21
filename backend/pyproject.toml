@@ -18,7 +18,9 @@ dependencies = [
   "uvicorn[standard]",
   "fastapi",
   "sentry-sdk",
-  "httpx"
+  "httpx",
+  "sqlalchemy",
+  "mysqlclient"
 ]
 
 [project.optional-dependencies]
@@ -30,7 +32,9 @@ test = [
   "pytest-env",
   "mypy",
   "tox",
-  "trio"
+  "trio",
+  "sqlalchemy",
+  "mysqlclient"
 ]
 
 [tool.black]

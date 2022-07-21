@@ -12,3 +12,5 @@ pytest-env
 mypy
 tox
 trio
+sqlalchemy
+mysqlclient
