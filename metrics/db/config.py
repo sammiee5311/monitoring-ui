@@ -1,19 +1,22 @@
 from __future__ import annotations
 
+import os
+
+from dotenv import load_dotenv
 from abc import ABC, abstractmethod
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
 
 from db.repository import AbstractRepository, SqlAlchemyRepository
-from db.model import Base
 
+load_dotenv("./config/.env")
 
-USER = "root"
-PASSWORD = "root"
-HOST = "127.0.0.1"
-PORT = "3306"
-DATABASE_NAME = "metrics"
+USER = os.environ["DB_USER"]
+PASSWORD = os.environ["DB_PASSWORD"]
+HOST = os.environ["DB_HOST"]
+PORT = os.environ["DB_PORT"]
+DATABASE_NAME = os.environ["DB_NAME"]
 DATABASE_URI = f"mysql+mysqldb://{USER}:{PASSWORD}@{HOST}:{PORT}/metrics"
 
 DEFAULT_SESSION_FACTORY = sessionmaker(

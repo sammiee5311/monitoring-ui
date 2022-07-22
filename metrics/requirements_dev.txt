@@ -8,3 +8,4 @@ pytest-env
 mypy
 tox
 trio
+python-dotenv

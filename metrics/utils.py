@@ -61,6 +61,5 @@ def add_metric_to_database(
             disk_io_read,
             disk_io_write,
         )
-
         db.session.add(metric)
         db.commit()

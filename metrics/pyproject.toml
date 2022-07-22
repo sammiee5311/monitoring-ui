@@ -18,7 +18,8 @@ dependencies = [
   "docker",
   "dacite",
   "sqlalchemy",
-  "mysqlclient"
+  "mysqlclient",
+  "python-dotenv"
 ]
 
 [project.optional-dependencies]

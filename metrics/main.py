@@ -4,18 +4,21 @@ This is scheduler.
 
 __version__ = "0.1"
 
-
+import os
 from docker.errors import NotFound
 from apscheduler.schedulers.background import BlockingScheduler
 from db.config import SqlAlchemyDB
+from dotenv import load_dotenv
 
 from utils import get_containers_status, get_metrics_from_docker, add_metric_to_database
 
 
-SCHEDULER_TIME = 60
-SCHEDULER_ID = "metrics"
-SCHEDULER_TRIGGER = "interval"
-SCHEDULER_TIMEZONE = "Asia/Seoul"
+load_dotenv("./config/.env")
+
+SCHEDULER_TIME = os.environ["SCHEDULER_TIME"]
+SCHEDULER_ID = os.environ["SCHEDULER_ID"]
+SCHEDULER_TRIGGER = os.environ["SCHEDULER_TRIGGER"]
+SCHEDULER_TIMEZONE = os.environ["SCHEDULER_TIMEZONE"]
 
 db = SqlAlchemyDB()
 
