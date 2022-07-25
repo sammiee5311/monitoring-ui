@@ -4,7 +4,7 @@ from typing import Iterator
 from dacite import from_dict
 
 from container_status import ContainerStatus
-from db.config import SqlAlchemyDB
+from db.sql_alchemy import SqlAlchemyDB
 from db.model import Metric
 
 

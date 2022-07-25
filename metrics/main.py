@@ -7,7 +7,7 @@ __version__ = "0.1"
 import os
 from docker.errors import NotFound
 from apscheduler.schedulers.background import BlockingScheduler
-from db.config import SqlAlchemyDB
+from db.sql_alchemy import SqlAlchemyDB
 from dotenv import load_dotenv
 
 from utils import get_containers_status, get_metrics_from_docker, add_metric_to_database
