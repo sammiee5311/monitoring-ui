@@ -1,4 +1,4 @@
-from db.config import SqlAlchemyDB
+from db.sql_alchemy import SqlAlchemyDB
 
 db = SqlAlchemyDB()
 
