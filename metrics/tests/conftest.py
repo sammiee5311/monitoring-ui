@@ -1,9 +1,11 @@
+from typing import Iterator
 import pytest
 
 from datetime import time
 from dacite import from_dict
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.engine import Engine
+from sqlalchemy.orm import sessionmaker, Session
 from container_status import ContainerStatus
 from db.model import Metric
 
@@ -103,17 +105,17 @@ TEST_CONTAINER_STATUS = {
 
 
 @pytest.fixture
-def sqlite_db():
+def sqlite_db() -> Engine:
     engine = create_engine("sqlite:///:memory:")
     Metric.metadata.create_all(engine)
     return engine
 
 
 @pytest.fixture
-def sqlite_session_factory(sqlite_db):
+def sqlite_session_factory(sqlite_db) -> Iterator[Session]:
     yield sessionmaker(bind=sqlite_db)
 
 
 @pytest.fixture
-def container_status():
+def container_status() -> ContainerStatus:
     return from_dict(data_class=ContainerStatus, data=TEST_CONTAINER_STATUS)

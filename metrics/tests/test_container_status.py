@@ -1,11 +1,14 @@
-def test_container_server_name(container_status) -> None:
+from container_status import ContainerStatus
+
+
+def test_container_server_name(container_status: ContainerStatus) -> None:
     server_name, server_id = container_status.name, container_status.id
 
     assert server_name == "test"
     assert server_id == "test"
 
 
-def test_get_container_metrics(container_status) -> None:
+def test_get_container_metrics(container_status: ContainerStatus) -> None:
     cpu_usage = container_status.get_cpu_usage()
     memory_usage = container_status.get_memory_uasge()
     network_io_receive, network_io_transmit = container_status.get_network_io_receive_and_transmit()
