@@ -11,6 +11,7 @@ pytest-cov
 pytest-env
 mypy
 tox
+dacite
 trio
 sqlalchemy
 mysqlclient

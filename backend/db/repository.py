@@ -5,6 +5,9 @@ from typing import Optional
 
 
 class AbstractRepository(ABC):
+    def add(self, metric: Metric) -> None:
+        self._add(metric)
+
     def get(
         self, server_id: Optional[str] = None, start_time: Optional[str] = None, end_time: Optional[str] = None
     ) -> list[Metric]:

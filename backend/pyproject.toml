@@ -16,11 +16,12 @@ dynamic = ["version", "description"]
 dependencies = [
   "python-dotenv",
   "uvicorn[standard]",
-  "fastapi",
-  "sentry-sdk",
-  "httpx",
   "sqlalchemy",
-  "mysqlclient"
+  "mysqlclient",
+  "sentry-sdk",
+  "fastapi",
+  "dacite",
+  "httpx"
 ]
 
 [project.optional-dependencies]

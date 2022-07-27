@@ -1,9 +1,7 @@
 from db.sql_alchemy import SqlAlchemyDB
 
-db = SqlAlchemyDB()
 
-
-def get_grafana_servers() -> dict[str, dict[str, str]]:
+def get_grafana_servers(db: SqlAlchemyDB) -> dict[str, dict[str, str]]:
     servers = {}
 
     with db:
