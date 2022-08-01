@@ -1,10 +1,12 @@
 from db.sql_alchemy import SqlAlchemyDB
+from log import logger
 
 
 def get_grafana_servers(db: SqlAlchemyDB) -> dict[str, dict[str, str]]:
     servers = {}
 
     with db:
+        logger.info("Getting grafana url by backend servers.")
         metrics = db.metric.get()
 
         for metric in metrics:
