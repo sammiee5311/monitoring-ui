@@ -1,8 +1,9 @@
 from sqlalchemy.orm import declarative_base
+from sqlalchemy.ext.declarative import DeclarativeMeta
 from sqlalchemy.sql import func
 from sqlalchemy import Column, Integer, String, DateTime
 
-Base = declarative_base()
+Base: DeclarativeMeta = declarative_base()
 
 
 class Metric(Base):

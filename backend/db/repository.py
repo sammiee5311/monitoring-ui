@@ -19,7 +19,9 @@ class AbstractRepository(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def _get(self, server_id: str, start_time: Optional[str] = None, end_time: Optional[str] = None) -> list[Metric]:
+    def _get(
+        self, server_id: Optional[str] = None, start_time: Optional[str] = None, end_time: Optional[str] = None
+    ) -> list[Metric]:
         raise NotImplementedError
 
 
@@ -30,7 +32,9 @@ class SqlAlchemyRepository(AbstractRepository):
     def _add(self, metric: Metric) -> None:
         self.session.add(metric)
 
-    def _get(self, server_id: Optional[str] = None, start_time: Optional[str] = None, end_time: Optional[str] = None):
+    def _get(
+        self, server_id: Optional[str] = None, start_time: Optional[str] = None, end_time: Optional[str] = None
+    ) -> list[Metric]:
         if not server_id:
             return self.session.execute("SELECT server_id FROM Metrics GROUP BY server_id")
         return self.session.query(Metric).filter(Metric.server_id.startswith(server_id))
