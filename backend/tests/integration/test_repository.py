@@ -5,10 +5,12 @@ from db.model import Metric
 from db.repository import SqlAlchemyRepository
 from container_status import ContainerStatus
 
+from typing import Callable
+
 
 @pytest.mark.parametrize("machine_names", [(["metric1"]), (["metric1", "metric2"])])
 def test_add_metric_and_get_same_one(
-    sqlite_session_factory: Session, container_status: ContainerStatus, machine_names: list[str]
+    sqlite_session_factory: Callable[[], Session], container_status: ContainerStatus, machine_names: list[str]
 ) -> None:
     session = sqlite_session_factory()
     repo = SqlAlchemyRepository(session)
@@ -40,5 +42,7 @@ def test_add_metric_and_get_same_one(
 
     for added_metric in added_metrics:
         added_machine_names.append(added_metric.machine_name)
+
+    session.close_all()
 
     assert added_machine_names == machine_names

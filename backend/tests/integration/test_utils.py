@@ -14,9 +14,9 @@ def test_getting_grafana_servers(sqlite_session_factory: Session, container_stat
     network_io_receive, network_io_transmit = container_status.get_network_io_receive_and_transmit()
     disk_io_read, disk_io_write = container_status.get_disk_io_read_and_write()
 
-    db = SqlAlchemyDB(sqlite_session_factory)
+    repo = SqlAlchemyDB(sqlite_session_factory)
 
-    with db:
+    with repo:
         for machine_name in machine_names:
             metric = Metric(
                 machine_name,
@@ -29,9 +29,9 @@ def test_getting_grafana_servers(sqlite_session_factory: Session, container_stat
                 disk_io_read,
                 disk_io_write,
             )
-            db.session.add(metric)
-            db.commit()
+            repo.session.add(metric)
+            repo.commit()
 
-    servers = get_grafana_servers(db)
+    servers = get_grafana_servers(repo)
 
     assert len(servers) == 1

@@ -88,7 +88,7 @@ TEST_CONTAINER_STATUS = {
         "limit": 1,
     },
     "name": "test",
-    "id": "test",
+    "id": "test" * 5,
     "networks": {
         "eth0": {
             "rx_bytes": 1,
@@ -106,7 +106,7 @@ TEST_CONTAINER_STATUS = {
 
 @pytest.fixture
 def sqlite_db() -> Engine:
-    engine = create_engine("sqlite:///:memory:")
+    engine = create_engine("sqlite:///./test.db")
     Metric.metadata.create_all(engine)
     return engine
 
@@ -114,6 +114,8 @@ def sqlite_db() -> Engine:
 @pytest.fixture
 def sqlite_session_factory(sqlite_db) -> Iterator[Session]:
     yield sessionmaker(bind=sqlite_db)
+    print("Dropping database.")
+    Metric.metadata.drop_all(bind=sqlite_db)
 
 
 @pytest.fixture
