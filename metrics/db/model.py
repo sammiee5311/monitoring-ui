@@ -1,27 +1,4 @@
-from sqlalchemy.orm import declarative_base
-from sqlalchemy.ext.declarative import DeclarativeMeta
-from sqlalchemy.sql import func
-from sqlalchemy import Column, Integer, String, DateTime
-
-Base: DeclarativeMeta = declarative_base()
-
-
-class Metric(Base):
-
-    __tablename__ = "Metrics"
-
-    id = Column(Integer, primary_key=True)
-    create_date = Column(DateTime(timezone=True), default=func.now())
-    machine_name = Column(String(50))
-    server_name = Column(String(50))
-    server_id = Column(String(100))
-    cpu_usage = Column(Integer)
-    memory_usage = Column(Integer)
-    network_io_receive = Column(Integer)
-    network_io_transmit = Column(Integer)
-    disk_io_read = Column(Integer)
-    disk_io_write = Column(Integer)
-
+class Metric:
     def __init__(
         self,
         machine_name: str,

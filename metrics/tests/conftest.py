@@ -7,7 +7,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import sessionmaker, Session
 from container_status import ContainerStatus
-from db.model import Metric
+from db.orm import metadata
 
 
 TEST_CONTAINER_STATUS = {
@@ -107,14 +107,14 @@ TEST_CONTAINER_STATUS = {
 @pytest.fixture
 def sqlite_db() -> Engine:
     engine = create_engine("sqlite:///./test.db")
-    Metric.metadata.create_all(engine)
+    metadata.create_all(engine)
     return engine
 
 
 @pytest.fixture
 def sqlite_session_factory(sqlite_db) -> Iterator[Session]:
     yield sessionmaker(bind=sqlite_db)
-    Metric.metadata.drop_all(bind=sqlite_db)
+    metadata.drop_all(bind=sqlite_db)
 
 
 @pytest.fixture
