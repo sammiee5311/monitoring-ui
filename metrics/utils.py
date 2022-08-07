@@ -6,6 +6,7 @@ from dacite import from_dict
 from container_status import ContainerStatus
 from db.sql_alchemy import SqlAlchemyDB
 from db.model import Metric
+from log import logger
 
 
 def get_containers_status() -> Iterator[ContainerStatus]:
@@ -22,6 +23,8 @@ def get_metrics_from_docker(container_metric: ContainerStatus) -> tuple[str, str
     memory_usage = container_metric.get_memory_uasge()
     network_io_receive, network_io_transmit = container_metric.get_network_io_receive_and_transmit()
     disk_io_read, disk_io_write = container_metric.get_disk_io_read_and_write()
+
+    logger.info(f"Getting container metrics from {machine_name}-{server_name}")
 
     return (
         machine_name,

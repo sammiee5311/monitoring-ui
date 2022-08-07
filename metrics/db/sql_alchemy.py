@@ -7,6 +7,7 @@ from sqlalchemy.orm.session import Session
 
 from db.config import get_database_uri
 from db.repository import AbstractRepository, SqlAlchemyRepository
+from log import logger
 
 DEFAULT_SESSION_FACTORY = sessionmaker(
     bind=create_engine(
@@ -51,7 +52,9 @@ class SqlAlchemyDB(AbstractDB):
         self.session.close()
 
     def _commit(self):
+        logger.info("Commit metric to database.")
         self.session.commit()
 
     def rollback(self):
+        logger.info("Rollback database.")
         self.session.rollback()

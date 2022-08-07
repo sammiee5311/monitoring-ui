@@ -10,6 +10,7 @@ from apscheduler.schedulers.background import BlockingScheduler
 from db.sql_alchemy import SqlAlchemyDB
 from dotenv import load_dotenv
 
+from log import logger
 from utils import get_containers_status, get_metrics_from_docker, add_metric_to_database
 
 
@@ -30,7 +31,7 @@ def main() -> None:
             add_metric_to_database(db, *get_metrics_from_docker(container_metric))
 
     except (KeyError, NotFound) as err:
-        print(f"Server cannot save metrics: {err}")
+        logger.warning(f"Server cannot save metrics: {err}")
 
 
 if __name__ == "__main__":
