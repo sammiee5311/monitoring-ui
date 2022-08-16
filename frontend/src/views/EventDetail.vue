@@ -4,17 +4,18 @@ import { useServerStore } from "../store/server";
 import { useRoute } from "vue-router";
 
 const route = useRoute();
-const query = <{ server: string }>route.query;
+const query = route.query as { server: string };
 const server = useServerStore();
 
 server.getGrafanaPanels(query.server);
 
 const grafanaPanels = computed(() => server.grafanaPanels);
 const isGrafanaPanelsFetched = computed(() => server.isGrafanaPanelsFetched);
+const eventError = computed(() => server.eventError);
 </script>
 
 <template>
-  <div>
+  <div v-if="!eventError">
     <iframe
       v-if="isGrafanaPanelsFetched"
       v-for="grafanaPanel in grafanaPanels"
@@ -25,6 +26,7 @@ const isGrafanaPanelsFetched = computed(() => server.isGrafanaPanelsFetched);
       frameborder="0"
     ></iframe>
   </div>
+  <div v-else>{{ eventError }}</div>
 </template>
 
 <style scoped></style>

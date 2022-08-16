@@ -24,7 +24,7 @@ const goToEventDetail = (eventId: string, eventServer: string) => {
     <div
       :href="`http://localhost:9000/sentry/fast-api/events/${event.eventID}/`"
       class="list-group-item list-group-item-action"
-      @click="goToEventDetail(event.eventID, 'server')"
+      @click="goToEventDetail(event.eventID, event.tags.find((tag) => tag.key === 'server_name')!.value)"
     >
       {{ event.title }} | {{ event.tags.find((tag) => tag.key === "server_name")?.value }} |
       {{ event.tags.find((tag) => tag.key === "url")?.value }}

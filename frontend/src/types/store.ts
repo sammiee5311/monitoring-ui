@@ -1,3 +1,7 @@
+type ResponseError = {
+  error: string;
+};
+
 export type ServerState = {
   message: string;
   authToken: string;
@@ -5,7 +9,9 @@ export type ServerState = {
   sentryIssues?: SentryIssue[];
   grafanaPanels?: GrafanaPanels[];
   isEventsFetched: boolean;
+  eventError?: string;
   isIssuesFetched: boolean;
+  issueError?: string;
   isGrafanaPanelsFetched: boolean;
 };
 

@@ -34,7 +34,6 @@ export const useServerStore = defineStore("server", {
         if (typeof response === "string") {
           throw new Error(response);
         }
-
         const data = response.data;
 
         this.message = data.message;
@@ -56,12 +55,15 @@ export const useServerStore = defineStore("server", {
 
         if (typeof response === "string") {
           throw new Error(response);
+        } else if ("error" in response.data) {
+          throw new Error((response.data as unknown as { error: string }).error);
         }
 
         const data = response.data;
 
         this.grafanaPanels = data.grafanaPanels;
       } catch (err) {
+        this.eventError = err as string;
       } finally {
         this.isGrafanaPanelsFetched = true;
       }
